@@ -53,3 +53,40 @@ class Grafo:
 
     def __str__(self):
         return self.vertices
+
+class Cola:
+
+    def __init__(self):
+        self.items = []
+
+    def encolar(self, x):
+        self.items.append(x)
+
+    def desencolar(self):
+        if self.esta_vacia():
+            raise ValueError
+        return self.items.pop(0)
+        
+    def esta_vacia(self):
+        return len(self.items) == 0
+
+def peliculas_marvel(peliculas):
+    grados = {}
+    for v in peliculas.ver_vertices():
+        grados[v] = 0
+    for v in peliculas.ver_vertices():
+        for w in peliculas.adyacentes(v):
+            grados[w] += 1
+    q = Cola()
+    for v in peliculas.ver_vertices():
+        if grados[v] == 0:
+            q.encolar(v)
+    orden_peliculas = []
+    while not q.esta_vacia():
+        v = q.desencolar()
+        orden_peliculas.append(v)
+        for w in peliculas.adyacentes(v):
+            grados[w] -= 1
+            if grados[w] == 0:
+                q.encolar(w)
+    return orden_peliculas

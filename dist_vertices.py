@@ -53,3 +53,40 @@ class Grafo:
 
     def __str__(self):
         return self.vertices
+
+class Cola:
+
+    def __init__(self):
+        self.items = []
+
+    def encolar(self, x):
+        self.items.append(x)
+
+    def desencolar(self):
+        if self.esta_vacia():
+            raise ValueError
+        return self.items.pop(0)
+        
+    def esta_vacia(self):
+        return len(self.items) == 0
+
+def dist_vertices(grafo, origen, n):
+    visitados = set()
+    orden = {}
+    visitados.add(origen)
+    orden[origen] = 0
+    q = Cola()
+    q.encolar(origen)
+    resul = []
+    while not q.esta_vacia():
+        v = q.desencolar()
+        for w in grafo.adyacentes(v):
+            if w not in visitados:
+                visitados.add(w)
+                orden[w] = orden[v] + 1
+                if orden[w] < n:
+                    q.encolar(w)
+                else:
+                    resul.append(w)
+
+    return resul

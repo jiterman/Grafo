@@ -1,6 +1,7 @@
 from Git.Grafo.cola import *
 from Git.Grafo.grafo import *
 
+#Recorrido por niveles
 def bfs(grafo, origen):
     visitados = set()
     padres = {}

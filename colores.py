@@ -1,5 +1,21 @@
 import random 
 
+class Cola:
+
+    def __init__(self):
+        self.items = []
+
+    def encolar(self, x):
+        self.items.append(x)
+
+    def desencolar(self):
+        if self.esta_vacia():
+            raise ValueError
+        return self.items.pop(0)
+        
+    def esta_vacia(self):
+        return len(self.items) == 0
+
 class Grafo:
     def __init__(self, dirigido):
         self.vertices = {}
@@ -47,9 +63,25 @@ class Grafo:
     def __repr__(self):
         cad = "{"
         for clave, valor in self.vertices.items():
-            cad += "{clave}: {valor}, "
+            cad += "{}: {}, ".format(clave, valor)
         cad += "}"
         return cad
 
     def __str__(self):
         return self.vertices
+
+def colores(grafo):
+    colores = {}
+    origen = grafo.v_random()
+    q = Cola()
+    colores[origen] = 1
+    q.encolar(origen)
+    while not q.esta_vacia():
+        v = q.desencolar()
+        for w in grafo.adyacentes(v):
+            if w in colores and colores[w] == colores[v]:
+                return False
+            if w not in colores:
+                colores[w] = not colores[v]
+                q.encolar(w)
+    return True
